@@ -1,17 +1,9 @@
-import { ApolloClient, InMemoryCache, FieldReadFunction } from "@apollo/client";
-
-type CacheRedirects = Record<string, FieldReadFunction>;
+import { ApolloClient, InMemoryCache } from "@apollo/client";
 
 const cache = new InMemoryCache({
   typePolicies: {
     Query: {
       fields: {
-        // custodian(_, { args, toReference }) {
-        //   return toReference({
-        //     __typename: 'Custodian',
-        //     id: args?.id,
-        //   });
-        // },
         establishment(_, { args, toReference }) {
           return toReference({
             __typename: 'Establishment',
@@ -20,16 +12,22 @@ const cache = new InMemoryCache({
         },
       },
     },
-    // PaginatedCustodies: {
-    //   fields: {
-    //     items: {
-    //       // not working yet...
-    //       merge(existing = [], incoming) {
-    //         return [...existing, ...incoming];
-    //       }
-    //     }
-    //   }
-    // }
+    Custodian: {
+      fields: {
+        custodies: {
+          keyArgs: false,
+          merge(existing, incoming) {
+            return {
+              items: [
+                ...(existing?.items || []),
+                ...(incoming?.items || [])
+              ],
+              pagination: incoming.pagination
+            };
+          }
+        }
+      }
+    },
   },
 });
 

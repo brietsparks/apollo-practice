@@ -21,10 +21,7 @@ export function CustodianEstablishments(props: CustodianEstablishmentsProps) {
         field: 'creationTimestamp',
         sort: 'desc'
       }
-    },
-    // maybe these are needed?...
-    // fetchPolicy: "network-only",
-    // nextFetchPolicy: "cache-first"
+    }
   });
 
   const handleClickMore = React.useCallback(() => {
@@ -37,23 +34,6 @@ export function CustodianEstablishments(props: CustodianEstablishmentsProps) {
           sort: 'desc'
         }
       },
-      updateQuery(prev, next) {
-        return {
-          custodian: {
-            ...prev.custodian,
-            custodies: {
-              items: [
-                ...prev.custodian.custodies.items,
-                ...(next?.fetchMoreResult?.custodian.custodies.items || [])
-              ],
-              pagination: {
-                hasMore: next.fetchMoreResult?.custodian.custodies.pagination.hasMore || false,
-                cursor: next.fetchMoreResult?.custodian.custodies.pagination.cursor || prev.custodian.custodies.pagination.cursor
-              }
-            }
-          }
-        }
-      }
     });
   }, [data]);
 
