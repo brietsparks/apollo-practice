@@ -6,12 +6,12 @@ const cache = new InMemoryCache({
   typePolicies: {
     Query: {
       fields: {
-        custodian(_, { args, toReference }) {
-          return toReference({
-            __typename: 'Custodian',
-            id: args?.id,
-          });
-        },
+        // custodian(_, { args, toReference }) {
+        //   return toReference({
+        //     __typename: 'Custodian',
+        //     id: args?.id,
+        //   });
+        // },
         establishment(_, { args, toReference }) {
           return toReference({
             __typename: 'Establishment',
@@ -20,16 +20,16 @@ const cache = new InMemoryCache({
         },
       },
     },
-    PaginatedCustodies: {
-      fields: {
-        items: {
-          // not working yet...
-          merge(existing = [], incoming) {
-            return [...existing, ...incoming];
-          }
-        }
-      }
-    }
+    // PaginatedCustodies: {
+    //   fields: {
+    //     items: {
+    //       // not working yet...
+    //       merge(existing = [], incoming) {
+    //         return [...existing, ...incoming];
+    //       }
+    //     }
+    //   }
+    // }
   },
 });
 

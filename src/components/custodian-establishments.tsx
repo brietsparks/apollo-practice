@@ -22,7 +22,7 @@ export function CustodianEstablishments(props: CustodianEstablishmentsProps) {
         sort: 'desc'
       }
     },
-    // tried these...
+    // maybe these are needed?...
     // fetchPolicy: "network-only",
     // nextFetchPolicy: "cache-first"
   });
@@ -35,6 +35,23 @@ export function CustodianEstablishments(props: CustodianEstablishmentsProps) {
           field: 'creationTimestamp',
           cursor: data?.custodian.custodies.pagination.cursor,
           sort: 'desc'
+        }
+      },
+      updateQuery(prev, next) {
+        return {
+          custodian: {
+            ...prev.custodian,
+            custodies: {
+              items: [
+                ...prev.custodian.custodies.items,
+                ...(next?.fetchMoreResult?.custodian.custodies.items || [])
+              ],
+              pagination: {
+                hasMore: next.fetchMoreResult?.custodian.custodies.pagination.hasMore || false,
+                cursor: next.fetchMoreResult?.custodian.custodies.pagination.cursor || prev.custodian.custodies.pagination.cursor
+              }
+            }
+          }
         }
       }
     });
